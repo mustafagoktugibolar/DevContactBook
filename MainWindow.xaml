@@ -1,0 +1,67 @@
+﻿<dx:ThemedWindow 
+    x:Class="DevContactBook.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+    xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+    xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon"
+    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+    xmlns:dxnav="http://schemas.devexpress.com/winfx/2008/xaml/navigation"
+    xmlns:local="clr-namespace:DevContactBook.Views"
+    xmlns:vm="clr-namespace:DevContactBook.ViewModels" xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+    Title="Contact Book" Height="800" Width="1000" WindowStartupLocation="CenterScreen">
+    <dx:ThemedWindow.DataContext>
+        <vm:ContactViewModel />
+    </dx:ThemedWindow.DataContext>
+
+    <DockPanel>
+        <dxr:RibbonControl DockPanel.Dock="Top" RibbonStyle="Office2019">
+            <dxr:RibbonControl.ToolbarItems>
+                <dxb:BarButtonItemLink BarItemName="newItem"/>
+            </dxr:RibbonControl.ToolbarItems>
+            <dxr:RibbonDefaultPageCategory>
+                <dxr:RibbonPage Caption="Home">
+                    <dxr:RibbonPageGroup Caption="Contact">
+                        <dxb:BarButtonItem x:Name="AddContact" Content="Add" Command="{Binding AddContactCommand}" LargeGlyph="{dx:DXImage 'SvgImages/Arrows/DoubleNext.svg'}"/>
+                        <dxb:BarButtonItem x:Name="DeleteContact" Content="Delete" Command="{Binding DeleteContactCommand}" LargeGlyph="{dx:DXImage 'SvgImages/Save/SaveAs.svg'}"/>
+                        <dxb:BarButtonItem x:Name="UpdateContact" Content="Update" Command="{Binding UpdateContactCommand}" LargeGlyph="{dx:DXImage 'SvgImages/Save/SaveAs.svg'}"/>
+                    </dxr:RibbonPageGroup>
+                    <dxr:RibbonPageGroup Caption="Theme">
+                        <dxb:BarButtonItem x:Name="DarkTheme" Content="Dark Theme" Command="{Binding DarkThemeCommand}" LargeGlyph="{dx:DXImage 'SvgImages/Save/SaveAs.svg'}"/>
+                        <dxb:BarButtonItem x:Name="LightTheme" Content="Light Theme" Command="{Binding LightThemeCommand}" LargeGlyph="{dx:DXImage 'SvgImages/Save/SaveAs.svg'}"/>
+                    </dxr:RibbonPageGroup>
+                </dxr:RibbonPage>
+            </dxr:RibbonDefaultPageCategory>
+        </dxr:RibbonControl>
+        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" >
+            <dxg:GridControl Name="contactsGrid" ItemsSource="{Binding Contacts}" AutoExpandAllGroups="True" SelectedItem="{Binding SelectedContact}">
+                <dxg:GridControl.Columns>
+                    <dxg:GridColumn FieldName="FirstName" Header="First Name" Width="150"/>
+                    <dxg:GridColumn FieldName="LastName" Header="Last Name" Width="150"/>
+                    <dxg:GridColumn FieldName="PhoneNumber" Header="Phone Number" Width="150"/>
+                    <dxg:GridColumn FieldName="Email" Header="Email" Width="200"/>
+                    <dxg:GridColumn FieldName="Address" Header="Address" Width="200"/>
+                    <dxg:GridColumn FieldName="IsFavourite" Header="Favourite" Width="75"/>
+                </dxg:GridControl.Columns>
+                <dxg:GridControl.View>
+                    <dxg:TableView AutoWidth="True" AllowEditing="False"/>
+                </dxg:GridControl.View>
+            </dxg:GridControl>
+            <dxr:RibbonStatusBarControl DockPanel.Dock="Bottom">
+                <dxr:RibbonStatusBarControl.RightItems>
+                    <dxb:BarButtonItem x:Name="printItem" Content="Print" Command="{Binding ExportToExcelCommand}" Glyph="{dx:DXImage 'SvgImages/Print/Print.svg'}"/>
+                </dxr:RibbonStatusBarControl.RightItems>
+            </dxr:RibbonStatusBarControl>
+        </Grid>
+        <dxmvvm:Interaction.Behaviors>
+            <dx:DialogService x:Name="DialogService">
+                <dx:DialogService.ViewTemplate>
+                    <DataTemplate>
+                        <local:AddUpdateContactView/>
+                    </DataTemplate>
+                </dx:DialogService.ViewTemplate>
+            </dx:DialogService>
+        </dxmvvm:Interaction.Behaviors>
+    </DockPanel>
+</dx:ThemedWindow>

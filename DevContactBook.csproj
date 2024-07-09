@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ClosedXML" Version="0.102.2" />
+    <PackageReference Include="DevExpress.Mvvm.CodeGenerators" Version="22.1.1" />
+    <PackageReference Include="DevExpress.Win" Version="24.1.3" />
+    <PackageReference Include="DevExpress.Win.Design" Version="24.1.3" />
+    <PackageReference Include="DevExpress.Win.Navigation" Version="24.1.3" />
+    <PackageReference Include="DevExpress.Wpf" Version="24.1.3" />
+    <PackageReference Include="DevExpress.Wpf.Themes.All" Version="24.1.3" />
+    <PackageReference Include="DevExpress.Wpf.ThemesLW" Version="24.1.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+</Project>
