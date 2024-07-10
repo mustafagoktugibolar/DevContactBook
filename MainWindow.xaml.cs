@@ -1,16 +1,16 @@
-﻿using DevExpress.Xpf.Core;
-
+﻿using DevContactBook.ViewModels;
+using DevExpress.Xpf.Core;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace DevContactBook
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : ThemedWindow
     {
-        public MainWindow()
+        public MainWindow(IServiceProvider serviceProvider)
         {
             InitializeComponent();
+            DataContext = serviceProvider.GetRequiredService<ContactViewModel>();
         }
     }
 }

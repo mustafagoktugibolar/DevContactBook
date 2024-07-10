@@ -4,7 +4,6 @@ using System.Linq;
 using System.Windows;
 using System.Threading.Tasks;
 using DevContactBook.Models;
-using System.Collections.ObjectModel;
 
 
 namespace DevContactBook.ViewModels
@@ -14,11 +13,11 @@ namespace DevContactBook.ViewModels
         public AddUpdateContactViewModel(Contact contact)
         {
             SelectedContact = contact;
-
             SaveContactCommand = new DelegateCommand(async () => await SaveContactAsync());
             CancelCommand = new DelegateCommand(async () => await CancelAsync());
         }
 
+        // Create SelectedContact property
         private Contact _selectedContact;
         public Contact SelectedContact
         {
@@ -29,10 +28,12 @@ namespace DevContactBook.ViewModels
                 RaisePropertyChanged(nameof(SelectedContact));
             }
         }
+        // Create Commands
+        public IDelegateCommand SaveContactCommand { get; }
+        public IDelegateCommand CancelCommand { get; }
 
-        public ICommand SaveContactCommand { get; }
-        public ICommand CancelCommand { get; }
 
+        // Send message to ContactViewModel for saving the contact
         private async Task SaveContactAsync()
         {
 
@@ -40,11 +41,11 @@ namespace DevContactBook.ViewModels
             await CloseWindowAsync();
         }
 
+        // Close the window 
         private async Task CancelAsync()
         {
             await CloseWindowAsync();
         }
-
         private async Task CloseWindowAsync()
         {
             var window = Application.Current.Windows.OfType<Window>().SingleOrDefault(w => w.DataContext == this);

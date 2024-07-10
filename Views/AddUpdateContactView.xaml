@@ -6,7 +6,7 @@
                  xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
                  xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
                  xmlns:vm="clr-namespace:DevContactBook.ViewModels" 
-                d:DataContext="{d:DesignInstance Type=vm:AddUpdateContactViewModel}"
+             d:DataContext="{d:DesignInstance Type=vm:AddUpdateContactViewModel}"
              mc:Ignorable="d"
                  Height="400" Width="600">
     <Grid Margin="10">
