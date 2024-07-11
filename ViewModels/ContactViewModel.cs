@@ -7,15 +7,14 @@ using DevContactBook.Models;
 using DevContactBook.Services;
 using DevExpress.Mvvm;
 using Newtonsoft.Json;
-using Formatting = Newtonsoft.Json.Formatting;
 
 namespace DevContactBook.ViewModels
 {
     public class ContactViewModel : ViewModelBase
     {
         private const string DataFilePath = "C:\\Users\\mustafagoktugibolar\\source\\repos\\DevContactBook\\Data.json";
-        //protected IDialogService DialogService { get { return GetService<IDialogService>(); } }
         private readonly ICustomDialogService _dialogService;
+
         public ContactViewModel(ICustomDialogService dialogService)
         {
             _dialogService = dialogService;
@@ -35,7 +34,6 @@ namespace DevContactBook.ViewModels
             Debug.WriteLine("ContactViewModel created");
         }
 
-        // Create Contact list
         private ObservableCollection<Contact> contactsList;
         public ObservableCollection<Contact> Contacts
         {
@@ -43,7 +41,6 @@ namespace DevContactBook.ViewModels
             set => SetProperty(ref contactsList, value, nameof(Contacts));
         }
 
-        //Create SelectedContact property
         private Contact _selectedContact;
         public Contact SelectedContact
         {
@@ -52,13 +49,13 @@ namespace DevContactBook.ViewModels
             {
                 if (SetProperty(ref _selectedContact, value, nameof(SelectedContact)))
                 {
-                    (UpdateContactCommand).RaiseCanExecuteChanged();
-                    (DeleteContactCommand).RaiseCanExecuteChanged();
+                    UpdateContactCommand.RaiseCanExecuteChanged();
+                    DeleteContactCommand.RaiseCanExecuteChanged();
                 }
             }
         }
 
-        // Create Commands
+        // Commands
         public DelegateCommand AddContactCommand { get; }
         public DelegateCommand UpdateContactCommand { get; }
         public DelegateCommand DeleteContactCommand { get; }
@@ -66,19 +63,19 @@ namespace DevContactBook.ViewModels
         public DelegateCommand LightThemeCommand { get; }
         public DelegateCommand ExportToExcelCommand { get; }
 
-        //Open Add ContactView
+        // Open the AddUpdateContactView to add a new contact
         private void AddContact()
         {
             OpenAddUpdateContactView(new Contact(), "Add Contact");
         }
 
-        //Open Update ContactView
+        // Open the AddUpdateContactView to update a contact
         private void UpdateContact()
         {
             OpenAddUpdateContactView(SelectedContact, "Update Contact");
         }
 
-        //Delete Contact
+        // Delete a contact
         private async void DeleteContact()
         {
             if (SelectedContact != null)
@@ -88,14 +85,13 @@ namespace DevContactBook.ViewModels
                 await SaveContactsAsync();
             }
         }
-
-        // Check if there is a selected contact
+        // Check if a contact is selected
         private bool CanUpdateOrDeleteContact()
         {
             return SelectedContact != null;
         }
 
-        // Themes
+        // themes
         private void SetDarkTheme()
         {
             DevExpress.Xpf.Core.ApplicationThemeHelper.ApplicationThemeName = DevExpress.Xpf.Core.Theme.Win10DarkName;
@@ -122,14 +118,14 @@ namespace DevContactBook.ViewModels
                 }
             }
         }
-        // Save contacts to a json file
+        // Save Contact to JSON file
         private async Task SaveContactsAsync()
         {
             var json = JsonConvert.SerializeObject(Contacts, Formatting.Indented);
             await File.WriteAllTextAsync(DataFilePath, json);
         }
 
-        // Create a dialogService to open the AddUpdateContactView
+        // Open the AddUpdateContactView
         private void OpenAddUpdateContactView(Contact contact, string title)
         {
             var manageContactViewModel = new AddUpdateContactViewModel(contact);
@@ -139,6 +135,7 @@ namespace DevContactBook.ViewModels
             );
         }
 
+        // Handle messages from the AddUpdateContactViewModel
         private async void OnContactMessage(ContactMessage message)
         {
             var contact = message.Contact;
@@ -146,12 +143,10 @@ namespace DevContactBook.ViewModels
             if (!Contacts.Contains(contact))
             {
                 Contacts.Add(contact);
-
             }
             await SaveContactsAsync();
         }
-
-        // Export to Excel
+        // Export contacts to an Excel file
         private void ExportToExcelAsync()
         {
             var workbook = new XLWorkbook();
@@ -173,25 +168,19 @@ namespace DevContactBook.ViewModels
                 worksheet.Cell(currentRow, 4).Value = contact.PhoneNumber;
                 worksheet.Cell(currentRow, 5).Value = contact.Address;
                 worksheet.Cell(currentRow, 6).Value = contact.IsFavourite;
-
             }
 
-            // Adjust columns to content
             worksheet.Columns().AdjustToContents();
 
-            // Define a path to save the Excel file
             string filePath = "C:\\Users\\mustafagoktugibolar\\source\\repos\\DevContactBook\\Contacts.xlsx";
 
-            // Save the workbook asynchronously
             workbook.SaveAs(filePath);
 
-           // open the saved Excel file or notify the user that the export is complete
-           System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(filePath) { UseShellExecute = true });
-
+            Process.Start(new ProcessStartInfo(filePath) { UseShellExecute = true });
         }
     }
 
-    // ContactMessage class to send a message to the AddUpdateContactViewModel
+    // Message class to pass a Contact object
     public class ContactMessage
     {
         public ContactMessage(Contact contact)
@@ -199,11 +188,6 @@ namespace DevContactBook.ViewModels
             Contact = contact;
         }
 
-        private Contact _contact;
-        public Contact Contact
-        {
-            get => _contact;
-            set => _contact = value;
-        }
+        public Contact Contact { get; }
     }
 }

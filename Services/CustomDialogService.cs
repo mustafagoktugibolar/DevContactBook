@@ -1,6 +1,5 @@
 ﻿using DevExpress.Xpf.Core;
 using DevExpress.Mvvm;
-using System;
 using System.Windows;
 using DevContactBook.ViewModels;
 using DevContactBook.Views;
@@ -10,15 +9,10 @@ namespace DevContactBook.Services
 {
     public class CustomDialogService : ICustomDialogService
     {
-        private readonly IServiceProvider _serviceProvider;
-
-        public CustomDialogService(IServiceProvider serviceProvider)
-        {
-            _serviceProvider = serviceProvider;
-        }
-
+        // Show a dialog window
         public bool ShowDialog<TViewModel>(string title, TViewModel viewModel) where TViewModel : ViewModelBase
         {
+            // Create a new dialog window
             var dialogWindow = new DXWindow
             {
                 Title = title,
@@ -28,7 +22,7 @@ namespace DevContactBook.Services
                 Topmost = true,
                 DataContext = viewModel
             };
-
+            // Set the content of the dialog window based on the type of the view model
             if (typeof(TViewModel) == typeof(AddUpdateContactViewModel))
             {
                 var view = new AddUpdateContactView(viewModel as AddUpdateContactViewModel);
@@ -38,7 +32,7 @@ namespace DevContactBook.Services
             {
                 dialogWindow.Content = new ContentControl { Content = viewModel };
             }
-
+            // Show the dialog window
             var result = dialogWindow.ShowDialog();
             return result.HasValue && result.Value;
         }

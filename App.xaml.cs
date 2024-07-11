@@ -30,7 +30,6 @@ namespace DevContactBook
             services.AddTransient<MainWindow>();
             services.AddTransient<AddUpdateContactView>();
         }
-
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
