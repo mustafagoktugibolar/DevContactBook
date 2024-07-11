@@ -29,13 +29,13 @@ This repository contains a WPF ContactBook application developed using .NET Core
 ### Installation
 
 1. Clone the repository:
-    \`\`\`sh
+    ```
     git clone https://github.com/mustafagoktugibolar/DevContactBook.git
-    \`\`\`
+    ```
 2. Navigate to the project directory:
-    \`\`\`sh
+    ```
     cd contactbook
-    \`\`\`
+    ```
 3. Open the solution file (\`ContactBook.sln\`) in Visual Studio.
 
 ### Database Setup
@@ -45,17 +45,17 @@ The application uses SQLite for data storage. Ensure you have SQLite installed a
 ### Build and Run
 
 1. Restore the NuGet packages:
-    \`\`\`sh
+    ```
     dotnet restore
-    \`\`\`
+    ```
 2. Build the solution:
-    \`\`\`sh
+    ```
     dotnet build
-    \`\`\`
+    ```
 3. Run the application:
-    \`\`\`sh
+    ```
     dotnet run
-    \`\`\`
+    ```
 
 ## Usage
 
